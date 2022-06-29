@@ -1,0 +1,14 @@
+---
+  
+  - hosts: all
+    become: true
+    tasks:
+
+    - name: Install apache all systems
+      ansible.builtin.package:
+        name:
+          - "{{ apache_package }}" 
+          - "{{ php_package }}" 
+        state: latest
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"

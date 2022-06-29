@@ -1,0 +1,22 @@
+---
+  
+  - hosts: all
+    become: true
+    tasks:
+
+    - name: Update apt
+      apt:
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install apache all systems
+      apt:
+        name: apache2
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+    - name: imstall php module
+      apt:
+        name: libapache2-mod-php
+        state: latest
+      when: ansible_distribution == "Ubuntu"
