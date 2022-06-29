@@ -1,0 +1,32 @@
+---
+  
+  - hosts: all
+    become: true
+    tasks:
+
+    - name: Update system
+      ansible.builtin.package:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+  - hosts: group1
+    become: true
+    tasks:
+
+      - name: Detect os
+        debug: var=ansible_os_family
+  
+      - name: Read params from file
+        include_vars: "{{ lookup('first_found', params) }}"
+        vars:
+          params:
+            files:
+              - "vars/apache_{{ ansible_os_family }}.yml"
+    
+      - name: Install apache and php
+        ansible.builtin.package:
+          name:
+            - "{{ apache_package }}" 
+            - "{{ php_package }}" 
+          state: latest
